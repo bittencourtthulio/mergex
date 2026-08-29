@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="158" height="20" role="img" aria-label="atencao humana: 3 faixas">
+  <title>atencao humana: 3 faixas</title>
+  <linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
+  <clipPath id="c"><rect width="158" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#c)">
+    <rect width="96" height="20" fill="#555"/>
+    <rect x="96" width="62" height="20" fill="#0e7490"/>
+    <rect width="158" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+    <text x="48" y="15" fill="#010101" fill-opacity=".3">atencao humana</text>
+    <text x="48" y="14">atencao humana</text>
+    <text x="127" y="15" fill="#010101" fill-opacity=".3">3 faixas</text>
+    <text x="127" y="14">3 faixas</text>
+  </g>
+</svg>
