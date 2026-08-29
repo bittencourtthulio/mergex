@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="Fluxo da mergex: a branch nasce quando o trabalho comeca, cada task concluida vira um commit, o portao de prontidao barra o que nao esta pronto, os artefatos das skills irmas alimentam a entrega, e as saidas sao o pull request, o pacote de QA e o registro da entrega, com o diff ja classificado em tres faixas para o revisor humano.">
+  <rect x="0" y="0" width="1200" height="640" fill="#0d1117"/>
+
+  <text x="40" y="46" font-family="sans-serif" font-size="26" font-weight="bold" fill="#e6edf3">merge^x — o ultimo metro</text>
+  <text x="40" y="70" font-family="sans-serif" font-size="14" fill="#9da7b3">do codigo escrito ate o revisor humano</text>
+
+  <!-- ===== COLUNA 1: A BRANCH ===== -->
+  <text x="40" y="112" font-family="sans-serif" font-size="13" font-weight="bold" fill="#c9d1d9">1. A BRANCH NASCE COM O TRABALHO</text>
+
+  <!-- linha da branch -->
+  <line x1="70" y1="140" x2="70" y2="470" stroke="#e6edf3" stroke-width="3"/>
+
+  <!-- E0 abertura -->
+  <circle cx="70" cy="150" r="9" fill="#e6edf3"/>
+  <text x="92" y="146" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e6edf3">E0 abertura</text>
+  <text x="92" y="163" font-family="monospace" font-size="11" fill="#9da7b3">feature/ fix/ chore/</text>
+
+  <!-- commits por task -->
+  <circle cx="70" cy="228" r="7" fill="#0d1117" stroke="#e6edf3" stroke-width="3"/>
+  <text x="92" y="226" font-family="sans-serif" font-size="12" fill="#e6edf3">E1 commit — task 1</text>
+  <text x="92" y="241" font-family="monospace" font-size="10" fill="#8b949e">dois testes + suite verde</text>
+
+  <circle cx="70" cy="296" r="7" fill="#0d1117" stroke="#e6edf3" stroke-width="3"/>
+  <text x="92" y="294" font-family="sans-serif" font-size="12" fill="#e6edf3">E1 commit — task 2</text>
+  <text x="92" y="309" font-family="monospace" font-size="10" fill="#8b949e">intencao na mensagem</text>
+
+  <circle cx="70" cy="364" r="7" fill="#0d1117" stroke="#e6edf3" stroke-width="3"/>
+  <text x="92" y="362" font-family="sans-serif" font-size="12" fill="#e6edf3">E1 commit — task 3</text>
+  <text x="92" y="377" font-family="monospace" font-size="10" fill="#8b949e">so arquivo declarado</text>
+
+  <!-- E2 portao -->
+  <rect x="30" y="430" width="230" height="76" rx="6" fill="#3a2d0b" stroke="#e3a008" stroke-width="2"/>
+  <text x="46" y="454" font-family="sans-serif" font-size="13" font-weight="bold" fill="#f0c674">E2 PORTAO DE PRONTIDAO</text>
+  <text x="46" y="474" font-family="sans-serif" font-size="11" fill="#f0c674">PRONTO segue — BLOQUEADO encerra</text>
+  <text x="46" y="492" font-family="sans-serif" font-size="11" fill="#f0c674">barra e explica; nunca maquia</text>
+
+  <!-- ===== COLUNA 2: ARTEFATOS QUE CHEGAM ===== -->
+  <text x="330" y="112" font-family="sans-serif" font-size="13" font-weight="bold" fill="#c9d1d9">2. O QUE JA EXISTE ALIMENTA A ENTREGA</text>
+  <rect x="330" y="128" width="250" height="240" rx="6" fill="#161b22" stroke="#6e7681" stroke-width="1.5"/>
+  <text x="348" y="154" font-family="sans-serif" font-size="12" fill="#e6edf3">plano e tasks — sprintx / runx</text>
+  <text x="348" y="180" font-family="sans-serif" font-size="12" fill="#e6edf3">causa raiz — runx</text>
+  <text x="348" y="206" font-family="sans-serif" font-size="12" fill="#e6edf3">raio de impacto — legadox</text>
+  <text x="348" y="232" font-family="sans-serif" font-size="12" fill="#e6edf3">zonas de risco — legadox</text>
+  <text x="348" y="258" font-family="sans-serif" font-size="12" fill="#e6edf3">roteiro manual — runx</text>
+  <text x="348" y="284" font-family="sans-serif" font-size="12" fill="#e6edf3">convencoes — stackx</text>
+  <text x="348" y="316" font-family="sans-serif" font-size="11" font-style="italic" fill="#9da7b3">a mergex costura, nao inventa</text>
+  <text x="348" y="336" font-family="sans-serif" font-size="11" font-style="italic" fill="#9da7b3">insumo ausente vira aviso</text>
+  <text x="348" y="356" font-family="sans-serif" font-size="11" font-style="italic" fill="#9da7b3">do que falta</text>
+
+  <!-- E3 classificacao -->
+  <rect x="330" y="392" width="250" height="114" rx="6" fill="#161b22" stroke="#e6edf3" stroke-width="2"/>
+  <text x="348" y="416" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e6edf3">E3 ATENCAO HUMANA</text>
+  <rect x="348" y="428" width="14" height="14" fill="#ff7b72"/>
+  <text x="370" y="440" font-family="sans-serif" font-size="11" fill="#e6edf3">OLHO OBRIGATORIO — linha a linha</text>
+  <rect x="348" y="452" width="14" height="14" fill="#e3a008"/>
+  <text x="370" y="464" font-family="sans-serif" font-size="11" fill="#e6edf3">LEITURA RAPIDA — so a intencao</text>
+  <rect x="348" y="476" width="14" height="14" fill="#3fb950"/>
+  <text x="370" y="488" font-family="sans-serif" font-size="11" fill="#e6edf3">DISPENSAVEL — a maquina provou</text>
+
+  <!-- setas coluna 1 -> 2 -->
+  <line x1="262" y1="248" x2="322" y2="248" stroke="#8b949e" stroke-width="2"/>
+  <polygon points="330,248 320,243 320,253" fill="#8b949e"/>
+  <line x1="262" y1="450" x2="322" y2="450" stroke="#8b949e" stroke-width="2"/>
+  <polygon points="330,450 320,445 320,455" fill="#8b949e"/>
+
+  <!-- ===== COLUNA 3: SAIDAS ===== -->
+  <text x="640" y="112" font-family="sans-serif" font-size="13" font-weight="bold" fill="#c9d1d9">3. AS SAIDAS</text>
+
+  <rect x="640" y="128" width="230" height="72" rx="6" fill="#161b22" stroke="#e6edf3" stroke-width="2"/>
+  <text x="656" y="152" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e6edf3">E4 + E6 + E7</text>
+  <text x="656" y="171" font-family="sans-serif" font-size="12" fill="#e6edf3">pull request</text>
+  <text x="656" y="189" font-family="sans-serif" font-size="10" fill="#8b949e">arquivos alterados em destaque</text>
+
+  <rect x="640" y="216" width="230" height="72" rx="6" fill="#161b22" stroke="#e6edf3" stroke-width="2"/>
+  <text x="656" y="240" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e6edf3">E5</text>
+  <text x="656" y="259" font-family="sans-serif" font-size="12" fill="#e6edf3">pacote de QA</text>
+  <text x="656" y="277" font-family="sans-serif" font-size="10" fill="#8b949e">executavel sem ler codigo</text>
+
+  <rect x="640" y="304" width="230" height="72" rx="6" fill="#161b22" stroke="#e6edf3" stroke-width="2"/>
+  <text x="656" y="328" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e6edf3">E8</text>
+  <text x="656" y="347" font-family="sans-serif" font-size="12" fill="#e6edf3">registro da entrega</text>
+  <text x="656" y="365" font-family="sans-serif" font-size="10" fill="#8b949e">expx-schema v1</text>
+
+  <!-- setas coluna 2 -> 3 -->
+  <line x1="588" y1="200" x2="632" y2="170" stroke="#8b949e" stroke-width="2"/>
+  <polygon points="640,164 629,166 634,175" fill="#8b949e"/>
+  <line x1="588" y1="248" x2="632" y2="250" stroke="#8b949e" stroke-width="2"/>
+  <polygon points="640,251 630,245 629,255" fill="#8b949e"/>
+  <line x1="588" y1="300" x2="632" y2="332" stroke="#8b949e" stroke-width="2"/>
+  <polygon points="640,338 634,328 629,337" fill="#8b949e"/>
+
+  <!-- ===== COLUNA 4: REVISOR ===== -->
+  <text x="930" y="112" font-family="sans-serif" font-size="13" font-weight="bold" fill="#c9d1d9">4. O REVISOR HUMANO</text>
+  <rect x="930" y="128" width="234" height="248" rx="6" fill="#161b22" stroke="#e6edf3" stroke-width="2"/>
+  <text x="948" y="154" font-family="sans-serif" font-size="12" fill="#e6edf3">recebe o diff ja classificado:</text>
+
+  <rect x="948" y="170" width="198" height="52" rx="4" fill="#161b22" stroke="#ff7b72" stroke-width="2"/>
+  <text x="962" y="190" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ff7b72">OLHO OBRIGATORIO</text>
+  <text x="962" y="209" font-family="sans-serif" font-size="10" fill="#9da7b3">e aqui que a atencao vale</text>
+
+  <rect x="948" y="232" width="198" height="46" rx="4" fill="#161b22" stroke="#e3a008" stroke-width="1.5"/>
+  <text x="962" y="251" font-family="sans-serif" font-size="11" font-weight="bold" fill="#e3a008">LEITURA RAPIDA</text>
+  <text x="962" y="268" font-family="sans-serif" font-size="10" fill="#9da7b3">confere a intencao</text>
+
+  <rect x="948" y="288" width="198" height="46" rx="4" fill="#161b22" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="962" y="307" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3fb950">DISPENSAVEL</text>
+  <text x="962" y="324" font-family="sans-serif" font-size="10" fill="#9da7b3">nao precisa abrir</text>
+
+  <text x="948" y="356" font-family="sans-serif" font-size="10" font-style="italic" fill="#9da7b3">recurso caro e finito</text>
+
+  <!-- seta 3 -> 4 -->
+  <line x1="878" y1="252" x2="922" y2="252" stroke="#8b949e" stroke-width="2"/>
+  <polygon points="930,252 920,247 920,257" fill="#8b949e"/>
+
+  <!-- ===== FAIXA AUTOMATICO ===== -->
+  <rect x="30" y="524" width="840" height="32" rx="4" fill="#21262d"/>
+  <text x="46" y="545" font-family="sans-serif" font-size="12" font-weight="bold" fill="#e6edf3">E0 a E8: TUDO AUTOMATICO — as skills irmas acionam a mergex sozinhas, sem intervencao</text>
+
+  <!-- ===== E9 MANUAL, FORA DO FLUXO ===== -->
+  <rect x="900" y="410" width="264" height="146" rx="6" fill="#161b22" stroke="#e6edf3" stroke-width="3" stroke-dasharray="8 5"/>
+  <text x="920" y="438" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e6edf3">E9 REVISAO E MERGE</text>
+  <rect x="920" y="450" width="72" height="20" rx="3" fill="#e6edf3"/>
+  <text x="930" y="465" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0d1117">MANUAL</text>
+  <text x="920" y="492" font-family="sans-serif" font-size="11" fill="#e6edf3">fora do fluxo automatico</text>
+  <text x="920" y="510" font-family="sans-serif" font-size="11" fill="#e6edf3">so por chamada explicita</text>
+  <text x="920" y="528" font-family="sans-serif" font-size="11" fill="#e6edf3">do desenvolvedor</text>
+  <text x="920" y="547" font-family="sans-serif" font-size="10" font-style="italic" fill="#9da7b3">integrar codigo e decisao humana</text>
+
+  <text x="40" y="592" font-family="sans-serif" font-size="11" fill="#9da7b3">A mergex nao faz merge no fluxo automatico, nao aprova o proprio trabalho, nao publica e nao previne colisao entre desenvolvedores.</text>
+  <text x="40" y="612" font-family="sans-serif" font-size="11" fill="#9da7b3">A branch isola o trabalho; quem resolve conflito e quem revisa o pull request, com contexto humano.</text>
+</svg>
