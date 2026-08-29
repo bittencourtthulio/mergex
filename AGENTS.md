@@ -70,7 +70,7 @@ Dois agentes rodam em contexto próprio, com ferramentas de leitura:
   pode chamá-lo. Ele não tem ferramenta de escrita nem de execução de comando:
   é impossibilidade técnica, não disciplina, que o impede de resolver conflito.
 
-Detalhe e testes: `hooks/README.md`.
+Detalhe e testes: `.claude/hooks/README.md`.
 
 ## Comandos
 

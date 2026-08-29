@@ -36,7 +36,10 @@ expx_modo() {
   local arq="$raiz/.expx/hooks.json"
   [ -r "$arq" ] || { printf '%s\n' "$padrao"; return 0; }
   local m
-  m="$(jq -r --arg n "$nome" '.modos[$n] // empty' "$arq" 2>/dev/null)" || m=""
+  # Formato do ecossistema: {"expx_hooks":1,"hooks":{"<nome>":{"modo":"aviso"}}}
+  # A forma antiga (.modos["<nome>"]) continua aceita para não quebrar quem já
+  # tinha escrito o arquivo à mão.
+  m="$(jq -r --arg n "$nome" '.hooks[$n].modo // .modos[$n] // empty' "$arq" 2>/dev/null)" || m=""
   case "$m" in
     aviso|bloqueio|desligado) printf '%s\n' "$m" ;;
     *) printf '%s\n' "$padrao" ;;
@@ -119,7 +122,15 @@ expx_barra() {
     exit 2
   else
     expx_rastro "$raiz" "regra_violada" "aviso" "$motivo" "$hook"
+    # Dois canais, porque os dois harnesses leem lugares diferentes:
+    #   Claude Code — stderr, que o transcript mostra
+    #   OpenCode    — stdout em JSON, que a ponte anexa ao resultado da
+    #                 ferramenta (o `before` do OpenCode não tem "permite mas
+    #                 avisa"; sem isto o aviso se perderia lá).
     printf '%s\n' "$saida" >&2
+    jq -cn --arg ctx "$saida" \
+      '{hookSpecificOutput:{hookEventName:"PreToolUse", additionalContext:$ctx}}' \
+      2>/dev/null || true
     exit 0
   fi
 }

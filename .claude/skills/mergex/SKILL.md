@@ -139,7 +139,7 @@ método nascem em aviso e só sobem depois de rodarem sem falso positivo — hoo
 que atrapalha é desinstalado, e junto com ele vão os que funcionavam.
 
 O modo de cada um vive em `.expx/hooks.json`. Detalhe operacional, os três
-cuidados de desenho e os testes: `hooks/README.md` do plugin.
+cuidados de desenho e os testes: `.claude/hooks/README.md`.
 
 ### O rastro
 

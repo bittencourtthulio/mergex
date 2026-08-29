@@ -106,12 +106,19 @@ caso "echo sobre push --force"    comum/git-perigoso.sh "$(bash_json "echo 'nao 
 caso "grep por push"          comum/git-perigoso.sh "$(bash_json 'grep -r push src/')" 0
 caso "git clean -n (seco)"    comum/git-perigoso.sh "$(bash_json 'git clean -n')" 0
 caso "git fetch"              comum/git-perigoso.sh "$(bash_json 'git fetch origin')" 0
+# Desfazer o stage NAO toca a arvore e nao destroi nada: barrar isso seria o
+# falso positivo que atrapalha o dia inteiro. Regressao de um caso real.
+caso "restore --staged (so o stage)" comum/git-perigoso.sh "$(bash_json 'git restore --staged f.txt')" 0
+caso "checkout de branch"            comum/git-perigoso.sh "$(bash_json 'git checkout outra-branch')" 0
 
 echo
 echo "branch-limpa"
 caso "troca com arvore limpa"  comum/branch-limpa.sh "$(bash_json 'git switch outra')" 0
 echo modificado >> arquivo.txt
 caso "troca com arvore suja"   comum/branch-limpa.sh "$(bash_json 'git switch outra')" 2
+# Descarte so e perigoso quando ha o que perder: aqui a arvore esta suja.
+caso "restore sem flag"   comum/git-perigoso.sh "$(bash_json 'git restore arquivo.txt')" 2
+caso "restore --worktree" comum/git-perigoso.sh "$(bash_json 'git restore --worktree arquivo.txt')" 2
 caso "switch -c com suja"      comum/branch-limpa.sh "$(bash_json 'git switch -c nova')" 2
 caso "checkout -- nao e troca" comum/branch-limpa.sh "$(bash_json 'git checkout -- arquivo.txt')" 0
 caso "npm run switch"          comum/branch-limpa.sh "$(bash_json 'npm run switch')" 0
@@ -126,10 +133,17 @@ git add src/b.ts
 caso "duas tasks misturadas"    mergex/commit-por-task.sh "$(bash_json 'git commit -m x')" 0
 echo "commit-por-task (modo bloqueio)"
 mkdir -p .expx
-echo '{"expx_hooks":1,"modos":{"commit-por-task":"bloqueio"}}' > .expx/hooks.json
+# Formato do ecossistema: hooks.<nome>.modo
+echo '{"expx_hooks":1,"hooks":{"commit-por-task":{"modo":"bloqueio"}}}' > .expx/hooks.json
 caso "duas tasks, em bloqueio"  mergex/commit-por-task.sh "$(bash_json 'git commit -m x')" 2
-echo '{"expx_hooks":1,"modos":{"commit-por-task":"desligado"}}' > .expx/hooks.json
+echo '{"expx_hooks":1,"hooks":{"commit-por-task":{"modo":"desligado"}}}' > .expx/hooks.json
 caso "desligado nao age"        mergex/commit-por-task.sh "$(bash_json 'git commit -m x')" 0
+# Forma antiga, aceita para não quebrar arquivo já escrito à mão
+echo '{"expx_hooks":1,"modos":{"commit-por-task":"bloqueio"}}' > .expx/hooks.json
+caso "forma antiga (.modos)"    mergex/commit-por-task.sh "$(bash_json 'git commit -m x')" 2
+# Arquivo ausente: valem os padrões; segurança nunca é rebaixada
+rm -f .expx/hooks.json
+caso "sem arquivo: metodo em aviso" mergex/commit-por-task.sh "$(bash_json 'git commit -m x')" 0
 rm -f .expx/hooks.json
 
 echo
@@ -148,7 +162,7 @@ printf 'portao: pronto\n' > docs/entregas/t1/ENTREGA.md
 caso "portao pronto libera"     mergex/pr-so-com-portao.sh "$(bash_json 'git push -u origin f')" 0
 caso "pr create com pronto"     mergex/pr-so-com-portao.sh "$(bash_json 'gh pr create --fill')" 0
 printf 'portao: bloqueado\n' > docs/entregas/t1/ENTREGA.md
-echo '{"expx_hooks":1,"modos":{"pr-so-com-portao":"bloqueio"}}' > .expx/hooks.json
+echo '{"expx_hooks":1,"hooks":{"pr-so-com-portao":{"modo":"bloqueio"}}}' > .expx/hooks.json
 caso "portao bloqueado barra"   mergex/pr-so-com-portao.sh "$(bash_json 'git push -u origin f')" 2
 caso "build nao e push"         mergex/pr-so-com-portao.sh "$(bash_json 'npm run build')" 0
 rm -f .expx/hooks.json

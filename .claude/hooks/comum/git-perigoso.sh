@@ -165,9 +165,23 @@ fi
 # 4. Descarte de alteração local
 # --------------------------------------------------------------------------
 # git checkout -- <path> / git restore <path> / git stash drop|clear
-if printf '%s' "$CMD" | grep -Eq 'git([[:space:]]+-[^[:space:]]+)*[[:space:]]+checkout[^|;&]*[[:space:]]--([[:space:]]|$)' \
-|| printf '%s' "$CMD" | grep -Eq 'git([[:space:]]+-[^[:space:]]+)*[[:space:]]+restore([[:space:]]|$)' \
-|| printf '%s' "$CMD" | grep -Eq 'git([[:space:]]+-[^[:space:]]+)*[[:space:]]+stash[[:space:]]+(drop|clear)([[:space:]]|$)'; then
+DESCARTA=0
+if printf '%s' "$CMD" | grep -Eq 'git([[:space:]]+-[^[:space:]]+)*[[:space:]]+checkout[^|;&]*[[:space:]]--([[:space:]]|$)'; then
+  DESCARTA=1
+elif printf '%s' "$CMD" | grep -Eq 'git([[:space:]]+-[^[:space:]]+)*[[:space:]]+rest''ore([[:space:]]|$)'; then
+  # Só desfazer o stage nao toca a arvore de trabalho e nao destroi nada.
+  # Barrar isso seria o falso positivo que atrapalha o dia inteiro.
+  if printf '%s' "$CMD" | grep -Eq '[[:space:]]--worktree([[:space:]]|=|$)'; then
+    DESCARTA=1
+  elif printf '%s' "$CMD" | grep -Eq '[[:space:]]--staged([[:space:]]|=|$)'; then
+    DESCARTA=0
+  else
+    DESCARTA=1
+  fi
+elif printf '%s' "$CMD" | grep -Eq 'git([[:space:]]+-[^[:space:]]+)*[[:space:]]+stash[[:space:]]+(drop|clear)([[:space:]]|$)'; then
+  DESCARTA=1
+fi
+if [ "$DESCARTA" = "1" ]; then
   SUJO="$(git -C "$RAIZ" status --porcelain 2>/dev/null | head -20)"
   if [ -n "$SUJO" ]; then
     barra "descarte de alteracao local" \

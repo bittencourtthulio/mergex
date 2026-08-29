@@ -29,6 +29,34 @@ falso positivo ali é raro. Os três de método nascem em aviso, e só sobem a
 bloqueio depois de rodarem semanas sem falso positivo — a lista de violações
 que o painel acumula é o que guia a promoção.
 
+## Onde cada coisa mora
+
+Segue a convenção do ecossistema — a mesma da `stackx` e da `sprintx`:
+
+```
+.claude/hooks/comum/     hooks compartilhados (segredo, git, branch)
+.claude/hooks/mergex/    hooks próprios da mergex
+.claude/hooks/teste.sh   a suíte
+.claude/settings.json    o registro dos hooks no Claude Code
+.claude/agents/          os dois agentes
+.opencode/plugin/        a ponte para o OpenCode
+.opencode/agent/         os mesmos agentes, no formato do OpenCode
+.expx/hooks.json         o modo de cada hook
+```
+
+**A lógica não é duplicada entre os dois harnesses.** O plugin do OpenCode
+(`.opencode/plugin/mergex.ts`) invoca os **mesmos scripts** de
+`.claude/hooks/`. Só o registro difere, porque os mecanismos diferem:
+
+| | Claude Code | OpenCode |
+|---|---|---|
+| Registro | `settings.json`, evento → matcher → handler | plugin JS/TS, `tool.execute.before` |
+| Bloqueio | `exit 2`, motivo no stderr | lançar exceção |
+| Aviso | stderr, lido pelo transcript | não existe no `before`: o aviso é represado e anexado ao resultado no `after` |
+
+Por causa da última linha, os hooks emitem o aviso **nos dois canais**: stderr
+(Claude Code) e JSON no stdout (OpenCode). Um harness ignora o canal do outro.
+
 ## Modo, por hook
 
 O modo vive em `.expx/hooks.json`, na raiz do projeto:
@@ -36,13 +64,13 @@ O modo vive em `.expx/hooks.json`, na raiz do projeto:
 ```json
 {
   "expx_hooks": 1,
-  "modos": {
-    "sem-segredo": "bloqueio",
-    "git-perigoso": "bloqueio",
-    "branch-limpa": "bloqueio",
-    "commit-por-task": "aviso",
-    "arquivo-fora-do-plano": "aviso",
-    "pr-so-com-portao": "aviso"
+  "hooks": {
+    "sem-segredo": { "modo": "bloqueio" },
+    "git-perigoso": { "modo": "bloqueio" },
+    "branch-limpa": { "modo": "bloqueio" },
+    "commit-por-task": { "modo": "aviso" },
+    "arquivo-fora-do-plano": { "modo": "aviso" },
+    "pr-so-com-portao": { "modo": "aviso" }
   }
 }
 ```
@@ -74,7 +102,7 @@ Hook em execução de comando é o mais arriscado do ecossistema: intercepta
 ## Como testar
 
 ```
-./hooks/teste.sh
+./.claude/hooks/teste.sh
 ```
 
 Roda os casos de cada hook: o que tem que barrar, o que tem que passar, e os
