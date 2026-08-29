@@ -114,6 +114,29 @@ git merge-tree $(git merge-base origin/<base> origin/<head>) origin/<base> origi
 
 `merge-tree` calcula o merge **sem tocar na árvore de trabalho e sem criar commit**. Nunca faça um merge de verdade para "ver o conflito".
 
+### Delegue a análise ao agente `analista-de-conflito`
+
+**Passe o conflito ao agente `analista-de-conflito`.** Ele recebe o conflito e
+explica o que cada lado pretendia, segundo a mensagem de commit e o plano de
+cada trabalho.
+
+Ele é a peça mais útil deste comando, e a que mais se beneficia de contexto
+próprio: **ele lê os dois trabalhos sem estar comprometido com nenhum.** Quem
+escreveu um dos lados tende a achar que a intenção dele é a óbvia, e a do outro
+é o desvio.
+
+**As ferramentas dele são somente de leitura — `Read`, `Grep` e `Glob`, sem
+execução de comando.** Não é uma promessa de que ele não vai resolver o
+conflito: é impossibilidade técnica. Ele não tem como fazer checkout, merge, nem
+escrever no arquivo.
+
+Passe a ele: o conflito calculado com `merge-tree`, a mensagem de commit de cada
+lado, e o `tasks.md` (mais o `01-CAUSA-RAIZ.md`, quando é da runx) de cada
+trabalho.
+
+**Restrição herdada:** este agente só é acionado por este comando manual. Nada
+no fluxo automático da mergex pode chamá-lo.
+
 Para cada arquivo em conflito, relate quatro coisas:
 
 1. **Onde**: arquivo e trechos (as linhas ou a função).
@@ -144,6 +167,11 @@ CONFLITO — #482 contra main
 ```
 
 **Nunca resolva.** Não escolha um lado, não sugira o texto final do arquivo, não faça checkout de versão, não rode `git checkout --ours/--theirs`, não peça ao versionador que decida. Relatar as duas intenções é o limite — e é o ponto (regra 17).
+
+Acrescente, por trecho, **o que perguntar a quem decidir**: a pergunta que
+destrava a decisão, não a resposta. É o que o `analista-de-conflito` devolve, e
+é o que faz a análise valer o tempo de quem lê — ela nomeia a decisão que só
+uma pessoa com contexto de negócio pode tomar.
 
 ## Passo 6 — Apresentar a lista
 
@@ -220,6 +248,19 @@ Não faça merge, em nenhuma hipótese:
 - [ ] PRs abertos por esta instalação da mergex estão marcados.
 
 Ao fim, um resumo: o que foi integrado, o que ficou pendente e por quê.
+
+## O rastro do comando manual
+
+Grave em `docs/eventos/<trabalho_id>.jsonl`: **a lista de PRs avaliados, a ordem
+apresentada e o que foi mergeado.**
+
+```json
+{"ts":"<ISO-8601 UTC>","expx_eventos":1,"trabalho_id":"<id>","ferramenta":"mergex","origem":"skill","evento":"veredito_emitido","fase":"e9","task":null,"agente":"analista-de-conflito","resultado":"ok","detalhe":"PRs avaliados: #479, #482; ordem: #479 < #482; mergeado: #479","arquivos":[]}
+```
+
+O registro é do que **uma pessoa decidiu**, não do que a skill decidiu: a
+mergex **nunca faz merge por conta própria, em nenhum caminho**. Cada merge da
+lista teve confirmação explícita daquele PR específico.
 
 ## Quando falha
 

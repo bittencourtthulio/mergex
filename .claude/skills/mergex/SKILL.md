@@ -102,6 +102,62 @@ Vale para toda a skill, em qualquer etapa, sem exceção:
 - Nunca configurar credencial nem armazenar segredo.
 - Repositório sem versionador: seguir sem essas etapas, sem erro e sem bloqueio.
 
+## Hooks e agentes
+
+As 19 regras invioláveis abaixo continuam as mesmas. O que muda é **quem as
+garante**: hoje elas são instrução que o modelo pode esquecer numa execução
+longa; os hooks as tornam mecânicas, porque quem executa é o harness.
+
+A mergex é a skill que mais toca o versionador — é onde os hooks de segurança
+importam mais.
+
+### Os agentes
+
+| Agente | Quando | Ferramentas | Papel |
+|---|---|---|---|
+| `revisor-diff` | E3 | leitura | Classifica o diff nas três faixas, sem ter visto a implementação |
+| `analista-de-conflito` | E9, **só pelo comando manual** | leitura, sem execução de comando | Explica o que cada lado do conflito pretendia |
+
+Os dois rodam em contexto próprio. É o que torna estrutural — e não uma
+promessa que o modelo faz a si mesmo — a regra de que quem produz não avalia.
+O `analista-de-conflito` não tem ferramenta de escrita nem de execução: é
+**impossibilidade técnica**, não disciplina, que o impede de resolver conflito.
+
+### Os hooks
+
+| Hook | Modo inicial | O que garante |
+|---|---|---|
+| `sem-segredo` | **bloqueio** | Regra 5 — varredura a cada commit, não só no portão |
+| `git-perigoso` | **bloqueio** | Regra 11 — nunca forçado, nunca na principal, nunca reescrever o enviado |
+| `branch-limpa` | **bloqueio** | Regra 2 — nunca criar ou trocar branch com alteração pendente |
+| `commit-por-task` | aviso | Regra 3 — um commit por task, concluída e com suíte verde |
+| `arquivo-fora-do-plano` | aviso | Regra 4 — nunca commitar arquivo fora da lista declarada |
+| `pr-so-com-portao` | aviso | Regra 6 — sem `PRONTO` no portão, não sobe e não abre PR |
+
+Os de segurança nascem em bloqueio: segredo commitado não tem volta. Os de
+método nascem em aviso e só sobem depois de rodarem sem falso positivo — hook
+que atrapalha é desinstalado, e junto com ele vão os que funcionavam.
+
+O modo de cada um vive em `.expx/hooks.json`. Detalhe operacional, os três
+cuidados de desenho e os testes: `hooks/README.md` do plugin.
+
+### O rastro
+
+Os hooks e as etapas gravam em `docs/eventos/<trabalho_id>.jsonl`, no formato
+do contrato `expx-eventos` v1. A mergex grava `commit_criado` (E1) com a task
+correspondente, `pr_aberto` (E7) com a URL, e `veredito_emitido` (E3) do
+`revisor-diff`.
+
+No comando manual (E9), grava a lista de PRs avaliados, a ordem apresentada e o
+que foi mergeado — e **nunca faz merge por conta própria em nenhum caminho**.
+
+Com isso o painel mostra, sem tocar no versionador: por trabalho, a branch, os
+commits e a task de cada um; o que aguarda revisão e há quanto tempo; e a
+distribuição das três faixas por PR — que diz quanto de olho humano cada
+entrega está pedindo. Se todo PR sai com metade dos arquivos em olho
+obrigatório, ou o trabalho está mal fatiado ou as zonas de risco estão largas
+demais.
+
 ## Regras invioláveis
 
 1. A branch nasce com o trabalho, não no fim.

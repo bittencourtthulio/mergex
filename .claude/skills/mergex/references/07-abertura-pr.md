@@ -91,6 +91,17 @@ Registre `pr_url: null` e `pr_estado: null` no `ENTREGA.md`. **Isto não é uma 
 
 Sucesso: grave no `ENTREGA.md` a `pr_url` devolvida pelo comando e `pr_estado` (`rascunho` ou `aberto`). Reescreva `atualizado_em`.
 
+### Grave o evento no rastro
+
+Acrescente uma linha em `docs/eventos/<trabalho_id>.jsonl`:
+
+```json
+{"ts":"<ISO-8601 UTC>","expx_eventos":1,"trabalho_id":"<id>","ferramenta":"mergex","origem":"skill","evento":"pr_aberto","fase":"e7","task":null,"agente":null,"resultado":"ok","detalhe":"<url do PR>","arquivos":[]}
+```
+
+É o `pr_aberto` que permite ao painel mostrar o que aguarda revisão e há quanto
+tempo. PR não aberto (ferramenta ausente): não grave `pr_aberto` — não houve.
+
 ## Critério de saída
 
 Uma das duas, e as duas são sucesso:

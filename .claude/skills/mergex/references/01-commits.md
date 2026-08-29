@@ -162,6 +162,22 @@ Acrescente à lista `commits` do `ENTREGA.md`, com `task` e `commit`, e reescrev
 
 Não faça push aqui. Push é E6, e só depois do portão (E2) aprovar.
 
+### Grave o evento no rastro
+
+Acrescente uma linha em `docs/eventos/<trabalho_id>.jsonl`, no formato do
+contrato `expx-eventos` v1:
+
+```json
+{"ts":"<ISO-8601 UTC>","expx_eventos":1,"trabalho_id":"<id>","ferramenta":"mergex","origem":"skill","evento":"commit_criado","fase":"e1","task":"T-01.02","agente":null,"resultado":"ok","detalhe":"<tipo>(<escopo>): <título>","arquivos":["<caminhos do commit>"]}
+```
+
+É com `commit_criado` que o painel mostra, por trabalho, a branch, os commits e
+a task de cada um — sem tocar no versionador. **Chave nunca omitida:** valor que
+não se aplica é `null`.
+
+O arquivo é append-only e ignorado pelo versionador (é local da máquina de quem
+executou). Ninguém o edita à mão.
+
 ## Critério de saída
 
 Por task:

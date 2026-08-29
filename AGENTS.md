@@ -43,6 +43,35 @@ Não aprova o próprio trabalho, não faz merge no fluxo automático, não cria 
 
 **Não previne colisão entre desenvolvedores.** A branch isola o trabalho; ela não impede que duas pessoas alterem o mesmo código. Quem resolve conflito é quem revisa o pull request.
 
+## Hooks e agentes
+
+As regras acima deixaram de depender só de o agente lembrar delas. Elas agora
+são **hooks** — scripts determinísticos que o harness executa em toda chamada
+de ferramenta.
+
+Três nascem em **bloqueio**, porque o erro não tem volta:
+
+- `sem-segredo` — segredo, credencial ou dado real de cliente em commit ou escrita
+- `git-perigoso` — push forçado, commit/push na principal, reescrita de histórico enviado, descarte de alteração local, limpeza destrutiva
+- `branch-limpa` — criar ou trocar branch com alteração não commitada pendente
+
+Três nascem em **aviso**, e só sobem a bloqueio depois de rodarem sem falso
+positivo: `commit-por-task`, `arquivo-fora-do-plano` e `pr-so-com-portao`.
+
+Se um hook barrar sua ação, **a mensagem diz o que fazer** — leia e corrija, não
+contorne. O modo de cada hook vive em `.expx/hooks.json`.
+
+Dois agentes rodam em contexto próprio, com ferramentas de leitura:
+
+- `revisor-diff` classifica o diff nas três faixas (E3), sem ter visto a
+  implementação sendo escrita.
+- `analista-de-conflito` explica o que cada lado de um conflito pretendia.
+  **Só o comando manual `/mergex-revisar` o aciona** — nada no fluxo automático
+  pode chamá-lo. Ele não tem ferramenta de escrita nem de execução de comando:
+  é impossibilidade técnica, não disciplina, que o impede de resolver conflito.
+
+Detalhe e testes: `hooks/README.md`.
+
 ## Comandos
 
 | Comando | O que faz |

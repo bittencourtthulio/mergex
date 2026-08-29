@@ -6,6 +6,34 @@ O revisor é recurso caro e finito. Um diff de 40 arquivos sem classificação f
 
 **A classificação é derivada de evidência registrada** — raio, zonas de risco, cobertura de teste, tipo de mudança, artefatos das skills irmãs. **Nunca de sensação, nunca de tamanho** (regra 8).
 
+## Quem classifica: o agente `revisor-diff`
+
+**Delegue a classificação ao agente `revisor-diff`.** Ele roda em contexto
+próprio, com ferramentas de leitura, e **não viu a implementação sendo
+escrita** — que é exatamente o ponto. Quem escreveu o código tem interesse em
+achar que ele é simples: o arquivo que custou três horas parece merecer atenção,
+e o que saiu de primeira parece dispensável. Nenhuma das duas sensações é
+evidência.
+
+É a mesma lógica dos outros agentes de veredito do ecossistema (`auditor-plano`,
+`revisor-testes`, `qa`): quem produz não avalia.
+
+Passe a ele:
+
+- o diff (`git diff --name-status <branch-base>...HEAD`)
+- o `tasks.md` do trabalho
+- o `01-CAUSA-RAIZ.md`, quando é da runx
+- o arquivo de raio da legadox
+- o `PERFIL.md` da legadox
+
+O agente devolve a lista por arquivo, com faixa e motivo. **A regra que o prompt
+dele carrega em destaque é a que mais se erra:** tamanho de diff não é critério —
+arquivo de uma linha em zona de risco é olho obrigatório.
+
+O resto deste reference é o critério que você usa para **conferir** a saída dele
+e para gravar o `ATENCAO.md`. Se o agente não estiver disponível, aplique você
+mesmo os passos abaixo — a classificação não pode ser pulada.
+
 ## Pré-requisitos verificáveis
 
 - O E2 devolveu `PRONTO`. Se devolveu `BLOQUEADO`, o E3 não roda.
@@ -149,6 +177,17 @@ Estrutura:
 3. **Fontes consultadas e fontes ausentes** — o revisor precisa saber que dimensão não foi avaliada.
 
 Registre no `ENTREGA.md` a contagem por faixa (`atencao.olho_obrigatorio`, `atencao.leitura_rapida`, `atencao.dispensavel`).
+
+Grave também o veredito do agente no rastro, em `docs/eventos/<trabalho_id>.jsonl`:
+
+```json
+{"ts":"<ISO-8601 UTC>","expx_eventos":1,"trabalho_id":"<id>","ferramenta":"mergex","origem":"skill","evento":"veredito_emitido","fase":"e3","task":null,"agente":"revisor-diff","resultado":"ok","detalhe":"<x> olho obrigatorio, <y> leitura rapida, <z> dispensavel","arquivos":[]}
+```
+
+É esta linha que alimenta o indicador de **distribuição das faixas por PR** no
+painel — quanto de olho humano cada entrega está pedindo. Se todo PR sai com
+metade dos arquivos em olho obrigatório, ou o trabalho está mal fatiado ou as
+zonas de risco estão largas demais.
 
 Esta saída vai inteira para a seção **"Onde eu quero seu olho"** da descrição do PR (E4), e alimenta a ordenação do E9.
 

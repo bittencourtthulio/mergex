@@ -134,6 +134,45 @@ ls .claude/commands/mergex*.md    # ou .opencode/commands/
 
 Exemplos de saída real em [`exemplos/`](exemplos/): uma correção de regra de cálculo fiscal vinda da `runx`, em projeto sob modo legado com raio ALTO.
 
+## Hooks e agentes: as regras viram mecânica
+
+Toda regra inviolável da skill era, até aqui, uma instrução que o modelo podia
+esquecer numa execução longa. Os **hooks** mudam isso: quem os executa é o
+harness, não o modelo, e eles rodam sempre.
+
+A `mergex` é a skill que mais toca o versionador — é onde isso mais importa.
+
+| Hook | Modo | O que garante |
+|---|---|---|
+| `sem-segredo` | **bloqueio** | Varredura a cada commit e a cada escrita, não só no portão |
+| `git-perigoso` | **bloqueio** | Nunca forçado, nunca na principal, nunca reescrever o já enviado, nunca descartar alteração local |
+| `branch-limpa` | **bloqueio** | Nunca criar ou trocar branch com alteração pendente |
+| `commit-por-task` | aviso | Um commit por task, concluída e com suíte verde |
+| `arquivo-fora-do-plano` | aviso | Nada commitado fora da lista declarada na task |
+| `pr-so-com-portao` | aviso | Sem `PRONTO` no portão, não sobe e não abre PR |
+
+Os de segurança nascem em **bloqueio**: segredo commitado não tem volta, e o
+falso positivo ali é raro. Os de método nascem em **aviso** e só sobem depois de
+rodarem semanas sem falso positivo — porque **hook que atrapalha é
+desinstalado, e junto com ele vão os que funcionavam.**
+
+O modo de cada um vive em `.expx/hooks.json`, e o `doctor` mostra em que modo
+cada hook está.
+
+Dois agentes rodam em contexto próprio, com ferramentas de leitura:
+
+- **`revisor-diff`** classifica o diff nas três faixas sem ter visto a
+  implementação sendo escrita. Quem escreveu o código tem interesse em achar
+  que ele é simples.
+- **`analista-de-conflito`** explica o que cada lado de um conflito pretendia,
+  lendo os dois trabalhos sem estar comprometido com nenhum. Ele **não tem
+  ferramenta de escrita nem de execução de comando** — é impossibilidade
+  técnica, não disciplina, que o impede de resolver o conflito. Só
+  `/mergex-revisar` o aciona.
+
+Detalhe operacional, os três cuidados de desenho e a suíte de testes:
+[`hooks/README.md`](hooks/README.md).
+
 ## Integração com o ecossistema Expx
 
 | Skill | O que faz | Como se integra |
