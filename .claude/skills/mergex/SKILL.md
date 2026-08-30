@@ -212,6 +212,7 @@ Os caminhos são relativos à raiz desta skill. O detalhe operacional de cada et
 | Etapa | Roteiro operacional | Templates usados |
 |---|---|---|
 | contrato do frontmatter (E0, E1, E8) | `references/00-schema.md` | — |
+| estado da barra (E0, E7, E8, E9) | `references/10-estado.md` | — |
 | E0 ABERTURA | `references/00-abertura.md` | `assets/TEMPLATE-ENTREGA.md` |
 | E1 COMMIT POR TASK | `references/01-commits.md` | — |
 | E2 PORTÃO DE PRONTIDÃO | `references/02-prontidao.md` | `assets/TEMPLATE-prontidao.md` |

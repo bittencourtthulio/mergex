@@ -222,6 +222,19 @@ Sem essa confirmação, **não ofereça o merge** deste PR. Passe para o próxim
 
 4. Confirmado, faça o merge com a estratégia que o repositório usa (detecte em `CONVENCOES.md` da stackx ou nos merges anteriores; na ausência, use o padrão do serviço). Nunca force, nunca reescreva histórico já enviado.
 5. Atualize `pr_estado: merged` no `ENTREGA.md` correspondente, quando ele existir localmente.
+
+   **E, somente se o PR mergeado for o do trabalho atual**, grave `pr_estado: merged`
+   também em `.expx/estado.json`. O E9 percorre PRs de vários trabalhos e de outras
+   pessoas; a barra mostra **um** trabalho, o que está em andamento nesta sessão. Mergear o
+   PR de outro trabalho não muda o estado do seu.
+
+   O PR é do trabalho atual quando a `pr_url` do `ENTREGA.md` daquele PR casa com a do
+   `ENTREGA.md` do trabalho nomeado em `trabalho` no próprio `estado.json`. Se `trabalho`
+   for `null`, se o `estado.json` não existir, ou se a correspondência não for certa,
+   **não grave nada** — na dúvida, deixe a barra como está.
+
+   Não toque em `branch`. O procedimento é o de `10-estado.md`, e falha de gravação vai
+   para o rastro sem interromper a condução dos PRs seguintes.
 6. Recusa ou silêncio: **não faça o merge**, siga para o próximo, e registre que ele ficou pendente.
 
 ### As cinco recusas duras
@@ -246,6 +259,7 @@ Não faça merge, em nenhuma hipótese:
 - [ ] Conflitos foram relatados com as duas intenções, sem resolução.
 - [ ] Cada merge feito teve confirmação específica; os de OLHO OBRIGATÓRIO tiveram a confirmação dupla.
 - [ ] PRs abertos por esta instalação da mergex estão marcados.
+- [ ] `pr_estado: merged` foi para o `.expx/estado.json` **apenas** se o PR mergeado era o do trabalho atual; PR de outro trabalho não alterou a barra.
 
 Ao fim, um resumo: o que foi integrado, o que ficou pendente e por quê.
 

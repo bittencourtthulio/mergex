@@ -164,6 +164,26 @@ sessão. Disparar aqui não é duplicação inútil: a reconstrução é idempot
 milissegundos, e a entrega pode fechar muito antes de a sessão acabar — inclusive numa sessão
 que nunca chega ao `Stop`.
 
+## Limpar o estado da barra
+
+Terminado o registro, o trabalho está entregue: não há mais um trabalho em andamento nesta
+sessão. Em `.expx/estado.json`, devolva os **seus dois campos** a `null`:
+
+- `branch`: `null`
+- `pr_estado`: `null`
+
+Vale igualmente para trabalho **abandonado** — o desenvolvedor desistiu, ou o portão barrou
+e o trabalho não vai seguir. A barra some do que já não está acontecendo.
+
+Não limpe `trabalho`, `fase`, `task`, `raio` nem `orcamento_*`: eles são das irmãs, e são
+elas que os zeram nas próprias transições de fechamento. Limpar campo alheio apagaria o
+estado de quem ainda está trabalhando.
+
+Repositório sem versionador: os dois campos já são `null` desde o E0 e nada é gravado.
+
+O procedimento é o de `10-estado.md`. Falha de gravação vai para o rastro e **não interrompe
+o E8** — a entrega já está registrada no `ENTREGA.md`, que é a fonte de verdade.
+
 ## Entrega ao usuário
 
 Terminado o E8, apresente na tela, curto:
@@ -197,6 +217,7 @@ Avisos: <lista, ou "nenhum">
 - [ ] `arquivos_alterados` veio do diff real; `faixa_atencao` bate com o `ATENCAO.md`.
 - [ ] Com o memox instalado, a reindexação foi disparada **depois** de gravar o `ENTREGA.md`.
 - [ ] Sem o memox instalado, nenhuma menção a ele — nem na saída, nem nos avisos.
+- [ ] `branch` e `pr_estado` voltaram a `null` no `.expx/estado.json`, e os campos das outras skills sobreviveram intactos. Este item nunca reprova o E8.
 
 ## Quando falha
 
@@ -210,3 +231,5 @@ Avisos: <lista, ou "nenhum">
 | memox não instalado | Pule a reindexação **em silêncio**; a entrega está completa |
 | Reindexação falha | Aviso na prosa e siga; o índice é reconstruível com `/memox-indexar` |
 | E3 não rodou (portão barrou) | `faixa_atencao: []` e `atencao` zerado; `arquivos_alterados` continua sendo o diff real |
+| `.expx/` não existe | Segue sem limpar o estado da barra, sem erro e sem aviso; **nunca cria o diretório** |
+| Gravação do `estado.json` falhou | Registra no rastro e segue; a entrega continua concluída |

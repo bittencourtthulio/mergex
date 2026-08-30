@@ -112,7 +112,7 @@ Confirme depois com `git branch --show-current`. Se a criação falhou, relate o
 
 ## Passo 5 — Registrar
 
-Duas gravações.
+Três gravações: duas de método, e uma terceira que é só exibição.
 
 **1. No `ORQUESTRADOR.md` do trabalho** (da sprintx ou da runx), acrescente ou atualize a linha da branch, na prosa:
 
@@ -133,6 +133,19 @@ Obtenha a data com `date +%Y-%m-%d` do sistema, nunca de memória. Não reescrev
 
 Crie a pasta `docs/entregas/<trabalho_id>/` se não existir. Leia o contrato do frontmatter em `08-registro.md` antes de gravar.
 
+**3. Atualize `.expx/estado.json`**, o arquivo que a barra de status lê:
+
+- `branch`: o nome da branch, **completo e sem corte** — a criada agora ou a retomada;
+- `pr_estado`: `null` — no E0 nunca existe pull request, inclusive na retomada de uma branch
+  cujo PR já tenha sido aberto antes. Se ele já existia, o E7 o repõe.
+
+**Repositório sem versionador (passo 1): não grave nada.** Os dois campos ficam `null`, que
+é o valor que já têm.
+
+O procedimento é o de `10-estado.md`: só se `.expx/` existir, alterando apenas estes dois
+campos e preservando os das outras skills, com gravação em temporário e renomeação. Falha de
+gravação vai para o rastro e **não interrompe o E0** — a barra nunca barra trabalho.
+
 ## Critério de saída
 
 O E0 terminou quando **todas** são verdade:
@@ -142,6 +155,7 @@ O E0 terminou quando **todas** são verdade:
 - [ ] A branch do trabalho existe e está ativa — criada agora ou retomada.
 - [ ] `ORQUESTRADOR.md` tem a linha da branch.
 - [ ] `docs/entregas/<trabalho_id>/ENTREGA.md` existe com `estado: aberto` e frontmatter válido.
+- [ ] `.expx/estado.json` tem `branch` e `pr_estado: null` — **ou** `.expx/` não existe, ou o repositório não é versionado, e nesses casos nada foi gravado. Este item nunca reprova o E0.
 
 Devolva ao chamador uma linha só: `mergex E0 OK — branch <nome> (base <base>), entrega registrada.` E devolva o controle: quem executa as tasks é a skill de origem.
 
@@ -155,3 +169,5 @@ Devolva ao chamador uma linha só: `mergex E0 OK — branch <nome> (base <base>)
 | Branch base não determinável | Usa a branch atual, registra a incerteza como aviso no `ENTREGA.md` |
 | `git switch -c` falha | Relata o erro literal e encerra; nunca força, nunca descarta nada |
 | Sem trabalho planejado | Diz o que falta (F4 da sprintx / E2 da runx) e encerra |
+| `.expx/` não existe | Segue sem gravar o estado da barra, sem erro e sem aviso; **nunca cria o diretório** |
+| Gravação do `estado.json` falhou | Registra no rastro e segue; o E0 continua OK |

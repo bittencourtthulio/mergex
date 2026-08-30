@@ -87,9 +87,36 @@ conteúdo de PR.md na descrição.
 
 Registre `pr_url: null` e `pr_estado: null` no `ENTREGA.md`. **Isto não é uma falha da entrega** — não relate como erro.
 
+**No `.expx/estado.json`, `pr_estado` permanece `null`.** Não houve pull request: a
+descrição está num arquivo, e arquivo não é PR. Não invente estado de PR que não existe —
+`rascunho` na barra significa "existe um PR em rascunho no serviço de hospedagem", e usá-lo
+aqui faria a barra mentir para quem confia nela.
+
+Como `null` é o valor que o campo já tem desde o E0, na prática **não há o que gravar**.
+`branch` também fica como está.
+
 ## Passo 4 — Registrar
 
 Sucesso: grave no `ENTREGA.md` a `pr_url` devolvida pelo comando e `pr_estado` (`rascunho` ou `aberto`). Reescreva `atualizado_em`.
+
+### Atualize `.expx/estado.json`
+
+Só quando o PR foi de fato aberto (passo 2). Grave **um campo**:
+
+| Como o PR foi aberto | `pr_estado` |
+|---|---|
+| Rascunho (`--draft`) — o QA ainda não aprovou | `rascunho` |
+| Pronto para revisão — `QA.md` com `VEREDITO: APROVADO` | `aberto` |
+
+É o mesmo valor que foi para o `ENTREGA.md`, no mesmo enum minúsculo e sem acento. **Não
+toque em `branch`**: ela já está lá desde o E0 e não mudou.
+
+Na retomada de um PR que já existia ("PR já existe para esta branch"), grave o estado real
+que a ferramenta devolveu — é retomada, não abertura nova.
+
+O procedimento é o de `10-estado.md`: só se `.expx/` existir, preservando os campos das
+outras skills, com gravação em temporário e renomeação. Falha de gravação vai para o rastro
+e **não interrompe o E7**.
 
 ### Grave o evento no rastro
 
@@ -106,8 +133,8 @@ tempo. PR não aberto (ferramenta ausente): não grave `pr_aberto` — não houv
 
 Uma das duas, e as duas são sucesso:
 
-- PR aberto, `pr_url` e `pr_estado` registrados; ou
-- PR não aberto, motivo registrado, `PR.md` completo e o desenvolvedor informado do que fazer.
+- PR aberto, `pr_url` e `pr_estado` registrados no `ENTREGA.md` e `pr_estado` no `.expx/estado.json`; ou
+- PR não aberto, motivo registrado, `PR.md` completo, o desenvolvedor informado do que fazer, e `pr_estado` **permanecendo `null`** nos dois lugares.
 
 Siga para o E8.
 
@@ -122,3 +149,5 @@ Siga para o E8.
 | PR já existe | Recupere a URL e registre; é retomada |
 | Sem push | O E7 não roda; siga para o E8 |
 | Alguém pediu para forçar a abertura com credencial | Recuse: a skill nunca configura credencial nem armazena segredo |
+| `.expx/` não existe | Segue sem gravar o estado da barra, sem erro e sem aviso; **nunca cria o diretório** |
+| Gravação do `estado.json` falhou | Registra no rastro e segue; o E7 continua OK e o PR continua aberto |

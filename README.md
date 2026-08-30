@@ -39,9 +39,11 @@ O método Expx é um conjunto de skills que se compõem, instaladas e mantidas p
 | **[runx](https://github.com/bittencourtthulio/runx)** | **Run** — ocorrência em produção, E1…E5 | E0 no início do fix, E1 a cada task, E2–E8 entre o QA e o relatório |
 | **[legadox](https://github.com/bittencourtthulio/legadox)** | **camada** de segurança para código legado | raio, caracterização, reversão e dívida alimentam o portão, a classificação e o PR |
 | **[stackx](https://github.com/bittencourtthulio/stackx)** | **camada** de convenções do repositório | convenções de branch, commit e teste vêm do `CONVENCOES.md` |
+| **[memox](https://github.com/bittencourtthulio/MemoX)** | **camada** de memória do projeto | arquivo com histórico de regressão sobe de faixa de atenção |
+| **[prodx](https://github.com/bittencourtthulio/prodx)** | **camada** de produto: decide **se** há trabalho | a montante: o `PD-ID` de origem acompanha o trabalho até a descrição do PR |
 | **mergex** *(este repositório)* | entrega: o último metro, E0…E9 | — |
 
-A `mergex` é a **última peça do fluxo**: as irmãs produzem os artefatos, ela os costura na entrega. **A ausência da `mergex` nunca quebra o fluxo das outras skills**, e a ausência de qualquer irmã nunca quebra o fluxo da `mergex`.
+A `mergex` é a **última peça do fluxo** — assim como a `prodx` é a primeira: uma decide se o trabalho existe, a outra o entrega. As irmãs produzem os artefatos, a `mergex` os costura na entrega. **A ausência da `mergex` nunca quebra o fluxo das outras skills**, e a ausência de qualquer irmã nunca quebra o fluxo da `mergex`.
 
 Detalhes do ecossistema inteiro no [README do expxdev](https://github.com/bittencourtthulio/expxdev).
 
