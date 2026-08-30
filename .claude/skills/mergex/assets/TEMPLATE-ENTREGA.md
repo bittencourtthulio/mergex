@@ -6,6 +6,11 @@ marcadores `{{assim}}`. O frontmatter segue o contrato expx-schema v1
 `[]`. Datas com `date +%Y-%m-%d` do sistema, nunca de memória.
 O YAML e a prosa andam juntos. Apague este cabeçalho ao gravar.
 
+`arquivos_alterados` é o **diff real**, não a previsão das tasks. `faixa_atencao` usa o
+vocabulário do índice (`alta`/`media`/`baixa`), não o nome da faixa em prosa: OLHO
+OBRIGATÓRIO → `alta`, LEITURA RÁPIDA → `media`, DISPENSÁVEL → `baixa`. As duas listas são
+`[]` enquanto o E3 não rodou; nunca omita a chave.
+
 ---
 
 ---
@@ -24,6 +29,11 @@ branch_base: {{nome da base | null}}
 commits:
   - task: {{T-NN.MM}}
     commit: {{identificador curto}}
+modulo_afetado: [{{modulos em minuscula sem acento, ou vazio}}]
+arquivos_alterados: [{{o diff real: git diff --name-only <base>...HEAD, sem repeticao, ou vazio}}]
+faixa_atencao:
+  - arquivo: {{caminho de arquivos_alterados}}
+    faixa: {{alta | media | baixa}}
 raio: {{baixo | medio | alto | null}}
 atencao:
   olho_obrigatorio: {{n}}

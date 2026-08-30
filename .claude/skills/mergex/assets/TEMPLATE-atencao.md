@@ -20,7 +20,17 @@ Tamanho de diff não é critério.
 
 | Arquivo | Mudança | Tamanho | Por quê |
 |---|---|---|---|
-| `{{caminho}}` | {{A/M/D/R}} | {{+n/-n}} | {{critério (O1..O8) e a evidência que o confirma}} |
+| `{{caminho}}` | {{A/M/D/R}} | {{+n/-n}} | {{critério (O1..O9) e a evidência que o confirma}} |
+
+{{quando O9 entrou na classificação, um bloco por arquivo, com trabalho, data e artefato:
+
+Faixa elevada para alta: {{caminho}} ja causou regressao.
+  {{trabalho anterior}} ({{data}}) alterou o arquivo;
+  {{trabalho posterior}} ({{data}}) teve causa raiz comprovada apontando para ele.
+  ver: {{caminho relativo do artefato}}
+
+sem trabalho, data e `ver:`, a subida vira burocracia inexplicada e o revisor
+aprende a ignorá-la}}
 
 ## LEITURA RÁPIDA — conferir intenção, não implementação
 

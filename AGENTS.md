@@ -72,6 +72,21 @@ Dois agentes rodam em contexto próprio, com ferramentas de leitura:
 
 Detalhe e testes: `.claude/hooks/README.md`.
 
+## A camada de memória (`memox`) — opcional
+
+Quando `.claude/skills/memox/assets/memox.py` existe, a mergex consulta o índice
+do `memox` na classificação da atenção (E3) e anexa o histórico de cada arquivo
+à descrição do PR (E4); ao fechar a entrega (E8), ela dispara a reindexação.
+
+**Arquivo com histórico de regressão é OLHO OBRIGATÓRIO**, qualquer que seja o
+tamanho da mudança — e toda subida cita trabalho, data e artefato.
+
+**Sem o memox instalado, pule em silêncio**: nenhum aviso, nenhuma menção na
+saída, e a classificação é exatamente a de sempre. A faixa **nunca desce** por
+causa do memox, e coincidência de arquivo não sobe faixa nenhuma.
+
+Detalhe: `.claude/skills/mergex/references/integracao/memox.md`.
+
 ## Comandos
 
 | Comando | O que faz |

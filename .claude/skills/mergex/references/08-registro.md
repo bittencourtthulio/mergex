@@ -18,7 +18,9 @@ Três vezes ao longo do trabalho, sempre no mesmo arquivo:
 
 ## O contrato — `kind: entrega`
 
-Segue o `expx-schema v1`, o mesmo contrato da sprintx e da runx. As regras universais valem todas:
+Segue o `expx-schema v1`, o mesmo contrato da sprintx e da runx. O contrato completo deste
+kind — campo a campo, com os enums e os campos de indexação — está em `references/00-schema.md`;
+o que segue é o que você precisa para gravar. As regras universais valem todas:
 
 1. O bloco YAML é a primeira coisa do arquivo, delimitado por `---` antes e depois.
 2. Toda chave em `snake_case`, minúscula, sem acento.
@@ -63,6 +65,15 @@ commits:
     commit: a3f19c2
   - task: T-01.02
     commit: 7b2e401
+modulo_afetado: [fiscal, relatorios]
+arquivos_alterados: [src/fiscal/base_calculo.py, src/fiscal/calculo_icms_st.py, tests/fiscal/test_icms_st_desconto.py]
+faixa_atencao:
+  - arquivo: src/fiscal/calculo_icms_st.py
+    faixa: alta
+  - arquivo: src/fiscal/base_calculo.py
+    faixa: media
+  - arquivo: tests/fiscal/test_icms_st_desconto.py
+    faixa: baixa
 raio: alto
 atencao:
   olho_obrigatorio: 3
@@ -90,6 +101,9 @@ entregue_em: 2026-08-29
 | `versionado` | `false` em repositório sem versionador |
 | `branch`, `branch_base` | `null` quando `versionado: false` |
 | `commits` | Um item por task commitada, na ordem em que fecharam; `[]` sem versionador |
+| `modulo_afetado` | Os módulos que a entrega toca; copiado da skill de origem quando ela o declara |
+| `arquivos_alterados` | **O diff real** (`git diff --name-only <branch_base>...HEAD`), não a previsão do plano |
+| `faixa_atencao` | A faixa por arquivo do E3, no vocabulário do índice (`alta`/`media`/`baixa`); `[]` antes do E3 |
 | `raio` | A faixa da legadox; `null` sem modo legado — **nunca invente uma faixa** |
 | `atencao` | As três contagens do E3; zeros quando o E3 não rodou |
 | `portao` | O resultado do E2 |
@@ -110,6 +124,45 @@ Abaixo do frontmatter, use `assets/TEMPLATE-ENTREGA.md`. A prosa é para quem ab
 5. **Desvios**, se houver — arquivos fora da lista declarada.
 
 **O YAML e a prosa andam juntos.** Nunca atualize um sem o outro.
+
+## Reindexação do memox — depois de gravar
+
+O `ENTREGA.md` que você acabou de gravar é **fonte indexada** pelo memox: é dele que saem o
+histórico de faixa de atenção por arquivo e a lista do que a entrega de fato tocou. Um índice
+que não sabe da entrega recém-fechada não a devolve na próxima consulta — e a entrega seguinte
+classificaria o mesmo arquivo sem saber o que este trabalho fez com ele.
+
+Verifique se o motor existe:
+
+```
+.claude/skills/memox/assets/memox.py
+```
+
+**Não existindo, pule em silêncio.** Não registre aviso, não mencione o memox na saída ao
+usuário: a camada de memória é opcional, e a entrega está completa sem ela.
+
+Existindo, dispare a reindexação **depois** de o `ENTREGA.md` estar gravado no disco:
+
+```
+python3 .claude/skills/memox/assets/memox.py indexar
+```
+
+Quatro regras:
+
+1. **Depois de gravar, nunca antes.** Reindexar antes indexaria a versão anterior do arquivo,
+   e o trabalho recém-entregue ficaria de fora até a próxima reconstrução.
+2. **Falha não bloqueia.** Código de saída diferente de zero, motor quebrado, `python3`
+   ausente: registre o aviso ("reindexação do memox não concluída") e siga. O índice inteiro é
+   derivado e reconstruível a qualquer momento com `/memox-indexar`; a entrega não depende dele.
+3. **Uma vez por entrega, no E8.** Não reindexe no E0, no E1 nem no E3 — o índice não muda a
+   cada commit, e reconstruí-lo a cada task seria custo sem informação nova.
+4. **A mergex não edita nada do memox.** Ela dispara a reconstrução e lê o resultado; o índice
+   e a `config.json` são do projeto, e a `config.json` nunca é sobrescrita pela reconstrução.
+
+Se o projeto tem o hook `memox-reindexar.sh` registrado no `Stop`, ele fará o mesmo ao fim da
+sessão. Disparar aqui não é duplicação inútil: a reconstrução é idempotente e roda em
+milissegundos, e a entrega pode fechar muito antes de a sessão acabar — inclusive numa sessão
+que nunca chega ao `Stop`.
 
 ## Entrega ao usuário
 
@@ -141,6 +194,9 @@ Avisos: <lista, ou "nenhum">
 - [ ] A prosa bate com o YAML.
 - [ ] Os avisos acumulados estão listados.
 - [ ] Nada foi sugerido sobre merge ou revisão.
+- [ ] `arquivos_alterados` veio do diff real; `faixa_atencao` bate com o `ATENCAO.md`.
+- [ ] Com o memox instalado, a reindexação foi disparada **depois** de gravar o `ENTREGA.md`.
+- [ ] Sem o memox instalado, nenhuma menção a ele — nem na saída, nem nos avisos.
 
 ## Quando falha
 
@@ -151,3 +207,6 @@ Avisos: <lista, ou "nenhum">
 | PR não aberto | `pr_url: null`, `pr_estado: null`, aviso na prosa; `estado` continua `entregue` |
 | Valor não determinável | `null` ou `[]`, **nunca invente**, nunca omita a chave |
 | Arquivo já existe do E0 | Atualize; nunca recrie do zero, nunca apague o histórico de `commits` |
+| memox não instalado | Pule a reindexação **em silêncio**; a entrega está completa |
+| Reindexação falha | Aviso na prosa e siga; o índice é reconstruível com `/memox-indexar` |
+| E3 não rodou (portão barrou) | `faixa_atencao: []` e `atencao` zerado; `arquivos_alterados` continua sendo o diff real |

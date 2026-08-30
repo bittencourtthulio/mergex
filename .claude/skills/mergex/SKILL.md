@@ -35,6 +35,7 @@ A mergex **costura**, não inventa. Tudo que ela escreve sobre a mudança vem de
 | roteiro de teste manual, veredito do QA | `QA.md` da runx |
 | convenções de branch, commit e teste | `docs/stack/CONVENCOES.md` da stackx |
 | fora de escopo observado | `DIVIDA.md` |
+| histórico do arquivo: regressão, reprovação em QA, faixa de atenção anterior | índice do `memox` — **fonte opcional**; ausente, o critério não se aplica |
 
 **Insumo ausente vira aviso do que falta, nunca invenção.** Seção sem insumo é omitida da entrega — jamais preenchida com texto genérico. Se a mergex não consegue afirmar algo a partir de um arquivo, ela diz que o arquivo não existe e segue.
 
@@ -81,9 +82,15 @@ A classificação é **derivada de evidência registrada** — raio, zonas de ri
 
 **Tamanho do diff NÃO é critério.** Um arquivo de uma linha em zona de risco é OLHO OBRIGATÓRIO.
 
+**O passado do arquivo é critério.** Quando o `memox` está instalado, um arquivo que já causou
+regressão sobe para OLHO OBRIGATÓRIO — e a subida vem sempre com o trabalho, a data e o
+artefato que a sustentam. A faixa **nunca desce** por causa do memox: ausência de histórico é
+ausência de informação, não atestado de segurança. Sem o memox, o critério simplesmente não se
+aplica e a classificação é a mesma de sempre.
+
 | Faixa | O que o revisor faz | Critérios — basta um |
 |---|---|---|
-| **OLHO OBRIGATÓRIO** | Lê linha a linha | Arquivo em zona de risco declarada no `PERFIL.md`; mudança de regra de negócio ou de cálculo; migração de banco, qualquer uma; autenticação, autorização ou dado pessoal; alteração de contrato público (rota, payload, evento, retorno); código sem cobertura de teste antes e depois; efeito irreversível declarado no plano de reversão; tudo que veio de raio ALTO |
+| **OLHO OBRIGATÓRIO** | Lê linha a linha | Arquivo em zona de risco declarada no `PERFIL.md`; mudança de regra de negócio ou de cálculo; migração de banco, qualquer uma; autenticação, autorização ou dado pessoal; alteração de contrato público (rota, payload, evento, retorno); código sem cobertura de teste antes e depois; efeito irreversível declarado no plano de reversão; tudo que veio de raio ALTO; **arquivo com histórico de regressão registrado no memox, ou com reprovação anterior em QA no mesmo arquivo** |
 | **LEITURA RÁPIDA** | Confere intenção, não implementação | Mudança coberta por teste de caracterização que continua passando; alteração em camada isolada com cobertura existente; código novo em arquivo novo, com os dois testes verdes |
 | **DISPENSÁVEL** | A máquina já provou | Arquivo de teste que só acrescenta caso; alteração mecânica coberta por teste de regressão verde; arquivo gerado automaticamente, quando declarado como tal |
 
@@ -104,7 +111,7 @@ Vale para toda a skill, em qualquer etapa, sem exceção:
 
 ## Hooks e agentes
 
-As 19 regras invioláveis abaixo continuam as mesmas. O que muda é **quem as
+As 20 regras invioláveis abaixo continuam as mesmas. O que muda é **quem as
 garante**: hoje elas são instrução que o modelo pode esquecer numa execução
 longa; os hooks as tornam mecânicas, porque quem executa é o harness.
 
@@ -179,6 +186,7 @@ demais.
 17. O comando de revisão nunca resolve conflito e nunca faz merge sem confirmação daquele PR específico.
 18. A mergex não faz merge no fluxo automático, não aprova, não publica e não faz deploy.
 19. A mergex entrega; quem fecha a ocorrência é a runx.
+20. Arquivo com histórico de regressão é OLHO OBRIGATÓRIO, qualquer que seja o tamanho da mudança.
 
 Regra transversal: use sempre caminhos relativos; nunca escreva caminhos absolutos em nenhum artefato.
 
@@ -203,6 +211,7 @@ Os caminhos são relativos à raiz desta skill. O detalhe operacional de cada et
 
 | Etapa | Roteiro operacional | Templates usados |
 |---|---|---|
+| contrato do frontmatter (E0, E1, E8) | `references/00-schema.md` | — |
 | E0 ABERTURA | `references/00-abertura.md` | `assets/TEMPLATE-ENTREGA.md` |
 | E1 COMMIT POR TASK | `references/01-commits.md` | — |
 | E2 PORTÃO DE PRONTIDÃO | `references/02-prontidao.md` | `assets/TEMPLATE-prontidao.md` |
@@ -222,5 +231,6 @@ Os caminhos são relativos à raiz desta skill. O detalhe operacional de cada et
 | `runx` | E0 no início do E3; E1 ao fechar cada task; E2–E8 entre o E4 e o E5 da runx | `references/integracao/runx.md` |
 | `legadox` | sem acionamento próprio; alimenta E2, E3, E4 e a ordenação de E9 | `references/integracao/legadox.md` |
 | `stackx` | convenções de branch, commit e comando de teste | `references/integracao/stackx.md` |
+| `memox` | sem acionamento próprio; alimenta o E3 e o E4, e é reindexado pelo E8 | `references/integracao/memox.md` |
 
 **A ausência da mergex nunca quebra o fluxo das outras skills**, e a ausência de qualquer irmã nunca quebra o fluxo da mergex: insumo que não existe vira aviso do que falta.

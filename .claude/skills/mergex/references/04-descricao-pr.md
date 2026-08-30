@@ -63,6 +63,64 @@ tests/fiscal/
 
 Se o diff tiver muitos arquivos, mantenha a lista completa e acrescente a contagem por pasta. **Não resuma com "e mais N arquivos"**: o arquivo omitido é justamente o que colide.
 
+#### O histórico de cada arquivo — só quando o memox está instalado
+
+Verifique se `.claude/skills/memox/assets/memox.py` existe. **Não existindo, pule em
+silêncio**: a seção fica exatamente como está acima, sem nenhuma menção ao memox, sem linha
+dizendo que o histórico não foi consultado.
+
+Existindo, o E3 já consultou o índice arquivo por arquivo (`references/03-atencao-humana.md`,
+Passo 2.b). Reaproveite aquela saída — **não consulte de novo**. Para cada arquivo **com
+histórico relevante**, acrescente uma linha logo abaixo do caminho, com duas informações e o
+link para o artefato:
+
+```
+src/fiscal/
+  M calculo_icms_st.py
+      3 trabalhos ja tocaram este arquivo; 1 causou regressao (OC-2026-0142, 2026-08-29)
+      ver: docs/manutencao/OC-2026-0142-arredondamento/01-CAUSA-RAIZ.md
+  M base_calculo.py
+tests/fiscal/
+  A test_icms_st_desconto.py
+```
+
+- **Quantas vezes já foi tocado**: `sinais.trabalhos` da resposta do memox.
+- **Se já causou regressão**: `sinais.regressoes` não vazio. Nomeie o trabalho e a data do
+  posterior (`trabalho_posterior`, `data_posterior`) — é o que dá ao revisor onde olhar.
+- **O link**: `origem_causa` da regressão, ou o `artefato` da entrada mais recente quando não
+  há regressão. Caminho relativo, sempre.
+
+Arquivo sem histórico relevante fica **sem linha nenhuma**. Não escreva "sem histórico", "0
+trabalhos" nem "nunca causou regressão": ruído recorrente treina o revisor a pular o bloco
+inteiro, inclusive na vez em que ele continha o aviso que importava.
+
+#### Os limites de ruído
+
+Os limites são do memox e valem aqui inteiros — eles vivem em `.expx/memoria/config.json`, que
+é do projeto, e a mergex os respeita em vez de inventar os seus:
+
+| Limite | Padrão | O que a descrição do PR faz |
+|---|---|---|
+| `max_entradas_recentes` | 3 | No máximo 3 entradas recentes por arquivo |
+| `sempre_incluir` | regressão, reprovação em QA, zona de risco | Entram **sempre**, independentemente da data — a idade não as torna irrelevantes |
+| `teto_entradas` | 8 | **Acima do teto, informe a contagem em vez de listar** |
+
+Acima do teto, o memox devolve `"estourou": true` e não lista as entradas. A descrição faz o
+mesmo — a contagem **é** a informação, e "reprovado em QA 12x" diz mais sobre o risco de mexer
+naquele arquivo do que a leitura das doze entradas diria:
+
+```
+src/nucleo/
+  M core.ts
+      40 trabalhos ja tocaram este arquivo; 14 relevantes, acima do limite de 8
+      reprovado em QA 12x
+      consulte: /memox-arquivo src/nucleo/core.ts
+```
+
+**A lista de arquivos nunca é cortada por causa disso** (regra 10 e DM-30). O que o teto
+limita é o histórico anexado a cada linha, nunca a lista de caminhos: o arquivo omitido seria
+justamente o que colide com outro PR, que é a razão de esta seção existir e vir no topo.
+
 ### 3. Origem
 
 Fonte: `00-OCORRENCIA.md` da runx, ou o trabalho da sprintx.
@@ -140,6 +198,9 @@ Confira antes de dar por gravado:
 - [ ] Nenhum marcador de template (`{{...}}`) sobrou.
 - [ ] Nenhum caminho absoluto.
 - [ ] A lista de arquivos está completa e agrupada por pasta.
+- [ ] Sem o memox instalado, nenhuma linha de histórico e nenhuma menção a ele na descrição.
+- [ ] Arquivo acima do teto de ruído tem a contagem, não a lista das entradas.
+- [ ] Nenhum arquivo sem histórico ganhou linha dizendo que não tem histórico.
 - [ ] Nada foi afirmado sobre a mudança sem artefato que sustente.
 - [ ] Cabe em uma tela até o fim da seção 5 — o resto é lista e link.
 
@@ -157,3 +218,6 @@ Confira antes de dar por gravado:
 | Sem `DIVIDA.md` | Omita a seção 11 |
 | Descrição passando de uma tela | Corte prosa, nunca a lista de arquivos nem a seção 10 |
 | Insumo contraditório entre dois artefatos | Relate os dois, aponte a contradição, não escolha por conta própria |
+| memox não instalado | Pule o histórico **em silêncio**; a seção 2 fica idêntica à de antes |
+| Arquivo com dezenas de trabalhos no histórico | Informe a contagem e aponte o índice; **nunca corte a lista de arquivos** |
+| Histórico do memox contradiz o `ATENCAO.md` | Reaproveite a saída do E3; o E3 é quem classifica, o E4 só costura |
