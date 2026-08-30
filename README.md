@@ -16,6 +16,16 @@
   <img alt="licenca MIT" src="https://raw.githubusercontent.com/bittencourtthulio/mergex/main/.github/assets/badge-license.svg">
 </p>
 
+<p>
+  <a href="https://bittencourtthulio.github.io/expxdev/#mergex"><strong>📘 Documentação do método</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://bittencourtthulio.github.io/expxdev/#mergex">Faixas de atenção</a>
+  &nbsp;·&nbsp;
+  <a href="https://bittencourtthulio.github.io/expxdev/#ecossistema">O ecossistema</a>
+  &nbsp;·&nbsp;
+  <a href="https://bittencourtthulio.github.io/expxdev/#schema">Contratos</a>
+</p>
+
 <strong>A camada de entrega do método Expx</strong> — leva o trabalho feito até o repositório<br>
 e até o revisor humano, para <a href="https://claude.com/claude-code">Claude Code</a> e <a href="https://opencode.ai">OpenCode</a>.
 
