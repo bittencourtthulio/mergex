@@ -103,8 +103,9 @@ expx_rastro() {
     --arg hook "$hook" \
     --argjson arqs "$arquivos" \
     '{ts:$ts, expx_eventos:1, trabalho_id:$id, ferramenta:"mergex",
-      origem:"hook", evento:$ev, fase:null, task:null, agente:null,
-      hook:$hook, resultado:$res, detalhe:$det, arquivos:$arqs}' \
+      origem:"hook", evento:$ev, fase:null, task:null, agente:"principal",
+      resultado:$res, detalhe:$det, arquivos:$arqs,
+      hook:$hook}' \
     >> "$arq" 2>/dev/null || true
 }
 
