@@ -51,9 +51,10 @@ O método Expx é um conjunto de skills que se compõem, instaladas e mantidas p
 | **[stackx](https://github.com/bittencourtthulio/stackx)** | **camada** de convenções do repositório | convenções de branch, commit e teste vêm do `CONVENCOES.md` |
 | **[memox](https://github.com/bittencourtthulio/MemoX)** | **camada** de memória do projeto | arquivo com histórico de regressão sobe de faixa de atenção |
 | **[prodx](https://github.com/bittencourtthulio/prodx)** | **camada** de produto: decide **se** há trabalho | a montante: o `PD-ID` de origem acompanha o trabalho até a descrição do PR |
+| **[buildx](https://github.com/bittencourtthulio/buildx)** | orquestra um projeto inteiro, da descrição ao sistema pronto | invoca `mergex-abrir`, `mergex-check`, `mergex-pr` e `mergex-qa` uma vez por feature do mapa; nunca invoca `mergex-revisar` — merge continua decisão humana. É dependência obrigatória dela |
 | **mergex** *(este repositório)* | entrega: o último metro, E0…E9 | — |
 
-A `mergex` é a **última peça do fluxo** — assim como a `prodx` é a primeira: uma decide se o trabalho existe, a outra o entrega. As irmãs produzem os artefatos, a `mergex` os costura na entrega. **A ausência da `mergex` nunca quebra o fluxo das outras skills**, e a ausência de qualquer irmã nunca quebra o fluxo da `mergex`.
+A `mergex` é a **última peça do fluxo** — assim como a `prodx` é a primeira: uma decide se o trabalho existe, a outra o entrega. As irmãs produzem os artefatos, a `mergex` os costura na entrega. **A ausência da `mergex` nunca quebra o fluxo das outras skills**, e a ausência de qualquer irmã nunca quebra o fluxo da `mergex`. A `buildx` é a única exceção do método: por ficar acima de todas, ela é a única peça que **depende** de outras — e a `mergex` é uma delas.
 
 Detalhes do ecossistema inteiro no [README do expxdev](https://github.com/bittencourtthulio/expxdev).
 
@@ -363,6 +364,7 @@ Contribuições que preservam as regras invioláveis da skill são bem-vindas. A
 <div align="center">
 <sub>Parte do método <strong>Expx</strong> ·
 <a href="https://github.com/bittencourtthulio/expxdev">expxdev</a> ·
+<a href="https://github.com/bittencourtthulio/buildx">buildx</a> ·
 <a href="https://github.com/bittencourtthulio/sprintx">sprintx</a> ·
 <a href="https://github.com/bittencourtthulio/runx">runx</a> ·
 <a href="https://github.com/bittencourtthulio/legadox">legadox</a> ·
