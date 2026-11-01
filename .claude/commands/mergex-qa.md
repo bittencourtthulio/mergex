@@ -1,5 +1,5 @@
 ---
-description: Gera o pacote de teste para o QA — etapa E5 da mergex, isolada. Produz um documento executável por quem não programa: o que mudou em linguagem de produto, o roteiro completo, o que observar de colateral, dado de teste fictício, ambiente, e critério objetivo de aprovação. Use ao passar o trabalho para o QA, ao preparar o teste manual, ou ao pedir o roteiro de homologação da entrega.
+description: "Gera o pacote de teste para o QA — etapa E5 da mergex, isolada. Produz um documento executável por quem não programa: o que mudou em linguagem de produto, o roteiro completo, o que observar de colateral, dado de teste fictício, ambiente, e critério objetivo de aprovação. Use ao passar o trabalho para o QA, ao preparar o teste manual, ou ao pedir o roteiro de homologação da entrega."
 ---
 
 Acione a skill `mergex` e execute **apenas a etapa E5 (pacote para o QA)**, seguindo `references/05-pacote-qa.md`.
